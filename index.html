@@ -20,12 +20,14 @@
             play = true;
             document.getElementById("button").innerHTML = "parar jogo";
             btn.setAttribute("onclick", "stopGame(this)");
+            btn.setAttribute("class", "btn btn-danger");
         }
 
         function stopGame(btn) {
             play = false;
             document.getElementById("button").innerHTML = "resetar jogo";
             btn.setAttribute("onclick", "resetGame(this)");
+            btn.setAttribute("class", "btn btn-primary");
         }
 
         function resetGame(btn) {
@@ -42,6 +44,7 @@
             document.getElementById("span").innerHTML = 'Vez de: <span id="currentPlayer">X</span>';
             document.getElementById("button").innerHTML = "iniciar jogo";
             btn.setAttribute("onclick", "startGame(this)");
+            btn.setAttribute("class", "btn btn-success");
         }
 
         /*  Criando funções do jogo para setar campos, avançar rodadas e checar resultados.
@@ -200,7 +203,7 @@
                 <td class="canto" id="3:3" onclick="setValue(this)"></td>
             </tr>
         </table><hr>
-        <button onclick="startGame(this)" id="button">Iniciar</button>
+        <button onclick="startGame(this)" id="button" class="btn btn-success">Iniciar</button>
     </div>
 </body>
 </html>
