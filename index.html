@@ -20,6 +20,7 @@
 
         function stopGame(btn) {
             play = false;
+            document.getElementById("span").innerHTML = "Velha";
             document.getElementById("button").innerHTML = "resetar jogo";
             btn.setAttribute("onclick", "resetGame(this)");
         }
@@ -62,6 +63,8 @@
                 } else {
                     vez = 0;
                 }
+            } else {
+                stopGame();
             }
 
             document.getElementById("playerAtual").innerHTML = player[vez];
