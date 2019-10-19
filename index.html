@@ -10,12 +10,12 @@
             Creating necessary variables in the game. */
         var play = false;
         var player = ["X", "O"];
-        var i, turn;
+        var round, turn;
 
         /*  Criando funções para iniciar, reiniciar e parar o jogo.
             Creating functions to start, restart and stop the game */
         function startGame(btn) {
-            i = 0;
+            round = 0;
             turn = 0;
             play = true;
             document.getElementById("button").innerHTML = "parar jogo";
@@ -29,7 +29,7 @@
         }
 
         function resetGame(btn) {
-            i = 0;
+            round = 0;
             turn = 0;
             play = false;
 
@@ -53,7 +53,7 @@
                     document.getElementById(btn.id).innerHTML = player[turn];
                 }
             
-                if (document.getElementById(btn.id).innerHTML != previousValue && i < 9) {
+                if (document.getElementById(btn.id).innerHTML != previousValue && round < 9) {
                     nextRound();
                     checkResult();
                 }
@@ -61,13 +61,17 @@
         }
 
         function nextRound () {
-            if (i < 9) {
-                i++;
+            // alert(round);
+            round++;
+            if (round < 9) {
                 if (turn == 0) {
                     turn = 1;
                 } else {
                     turn = 0;
                 }
+            } else {
+                document.getElementById("span").innerHTML = "Velha!";
+                stopGame(document.getElementById("button"));
             }
 
             document.getElementById("currentPlayer").innerHTML = player[turn];
@@ -94,12 +98,12 @@
                 document.getElementById(a + ":3").innerHTML) {
                     switch (rowValue) {
                         case "X":
-                            document.getElementById("span").innerHTML = "X venceu";
+                            document.getElementById("span").innerHTML = "X venceu!";
                             play = false;
                             stopGame(document.getElementById("button"));
                             break;
                         case "O":
-                            document.getElementById("span").innerHTML = "O venceu";
+                            document.getElementById("span").innerHTML = "O venceu!";
                             play = false;
                             stopGame(document.getElementById("button"));
                             break;
@@ -119,12 +123,12 @@
                 document.getElementById("3:" + a).innerHTML) {
                     switch (columnValue) {
                         case "X":
-                            document.getElementById("span").innerHTML = "X venceu";
+                            document.getElementById("span").innerHTML = "X venceu!";
                             play = false;
                             stopGame(document.getElementById("button"));
                             break;
                         case "O":
-                            document.getElementById("span").innerHTML = "O venceu";
+                            document.getElementById("span").innerHTML = "O venceu!";
                             play = false;
                             stopGame(document.getElementById("button"));
                             break;
@@ -144,12 +148,12 @@
                 document.getElementById("3:3").innerHTML) {
                     switch (diagonalValule) {
                         case "X":
-                            document.getElementById("span").innerHTML = "X venceu";
+                            document.getElementById("span").innerHTML = "X venceu!";
                             play = false;
                             stopGame(document.getElementById("button"));
                             break;
                         case "O":
-                            document.getElementById("span").innerHTML = "O venceu";
+                            document.getElementById("span").innerHTML = "O venceu!";
                             play = false;
                             stopGame(document.getElementById("button"));
                             break;
@@ -160,12 +164,12 @@
                             document.getElementById("3:1").innerHTML) {
                     switch (diagonalValule) {
                         case "X":
-                            document.getElementById("span").innerHTML = "X venceu";
+                            document.getElementById("span").innerHTML = "X venceu!";
                             play = false;
                             stopGame(document.getElementById("button"));
                             break;
                         case "O":
-                            document.getElementById("span").innerHTML = "O venceu";
+                            document.getElementById("span").innerHTML = "O venceu!";
                             play = false;
                             stopGame(document.getElementById("button"));
                             break;
