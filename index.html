@@ -6,13 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/stylesheet.css">
     <script>
+        /*  Criando variaveis necessárias no jogo.
+            Creating necessary variables in the game. */
         var play = false;
         var player = ["X", "O"];
-        var i, vez;
+        var i, turn;
 
+        /*  Criando funções para iniciar, reiniciar e parar o jogo.
+            Creating functions to start, restart and stop the game */
         function startGame(btn) {
             i = 0;
-            vez = 0;
+            turn = 0;
             play = true;
             document.getElementById("button").innerHTML = "parar jogo";
             btn.setAttribute("onclick", "stopGame(this)");
@@ -20,14 +24,13 @@
 
         function stopGame(btn) {
             play = false;
-            document.getElementById("span").innerHTML = "Velha";
             document.getElementById("button").innerHTML = "resetar jogo";
             btn.setAttribute("onclick", "resetGame(this)");
         }
 
         function resetGame(btn) {
             i = 0;
-            vez = 0;
+            turn = 0;
             play = false;
 
             for (i = 1; i <= 3; i++) {
@@ -36,19 +39,21 @@
                 }
             }
 
-            document.getElementById("span").innerHTML = 'Vez de: <span id="playerAtual">X</span>';
+            document.getElementById("span").innerHTML = 'Vez de: <span id="currentPlayer">X</span>';
             document.getElementById("button").innerHTML = "iniciar jogo";
             btn.setAttribute("onclick", "startGame(this)");
         }
 
+        /*  Criando funções do jogo para setar campos, avançar rodadas e checar resultados.
+            Creating game functions to set fields, advance rounds and check results. */
         function setValue (btn) {
             if (play == true) {
-                valorAnterior = document.getElementById(btn.id).innerHTML;
+                previousValue = document.getElementById(btn.id).innerHTML;
                 if (document.getElementById(btn.id).innerHTML == "") {
-                    document.getElementById(btn.id).innerHTML = player[vez];
+                    document.getElementById(btn.id).innerHTML = player[turn];
                 }
             
-                if (document.getElementById(btn.id).innerHTML != valorAnterior && i < 9) {
+                if (document.getElementById(btn.id).innerHTML != previousValue && i < 9) {
                     nextRound();
                     checkResult();
                 }
@@ -58,18 +63,18 @@
         function nextRound () {
             if (i < 9) {
                 i++;
-                if (vez == 0) {
-                    vez = 1;
+                if (turn == 0) {
+                    turn = 1;
                 } else {
-                    vez = 0;
+                    turn = 0;
                 }
-            } else {
-                stopGame();
             }
 
-            document.getElementById("playerAtual").innerHTML = player[vez];
+            document.getElementById("currentPlayer").innerHTML = player[turn];
         }
 
+        /*  verificando resultados do jogo.
+            checking match results. */
         function checkResult() {
             for (i = 1; i <= 3; i++) {
                 checkRow(i);
@@ -78,6 +83,8 @@
             checkDiagonal();
         }
 
+        /*  verificando linhas.
+            cheking lines. */
         function checkRow(a) {
             rowValue = document.getElementById(a + ":1").innerHTML;
             if (rowValue != "") {
@@ -89,18 +96,20 @@
                         case "X":
                             document.getElementById("span").innerHTML = "X venceu";
                             play = false;
-                            stopGame();
+                            stopGame(document.getElementById("button"));
                             break;
                         case "O":
                             document.getElementById("span").innerHTML = "O venceu";
                             play = false;
-                            stopGame();
+                            stopGame(document.getElementById("button"));
                             break;
                     }
                 }
             }
         }
         
+        /*  verificando colunas.
+            cheking columns. */
         function checkColumn(a) {
             columnValue = document.getElementById("1:" + a).innerHTML;
             if (columnValue != "") {
@@ -112,18 +121,20 @@
                         case "X":
                             document.getElementById("span").innerHTML = "X venceu";
                             play = false;
-                            stopGame();
+                            stopGame(document.getElementById("button"));
                             break;
                         case "O":
                             document.getElementById("span").innerHTML = "O venceu";
                             play = false;
-                            stopGame();
+                            stopGame(document.getElementById("button"));
                             break;
                     }
                 }
             }
         }
 
+        /*  verificando diagonais.
+            checking diagonals. */
         function checkDiagonal() {
             diagonalValule = document.getElementById("2:2").innerHTML;
             if (diagonalValule != "") {
@@ -135,12 +146,12 @@
                         case "X":
                             document.getElementById("span").innerHTML = "X venceu";
                             play = false;
-                            stopGame();
+                            stopGame(document.getElementById("button"));
                             break;
                         case "O":
                             document.getElementById("span").innerHTML = "O venceu";
                             play = false;
-                            stopGame();
+                            stopGame(document.getElementById("button"));
                             break;
                     }
                 } else if ( document.getElementById("2:2").innerHTML ==
@@ -151,12 +162,12 @@
                         case "X":
                             document.getElementById("span").innerHTML = "X venceu";
                             play = false;
-                            stopGame();
+                            stopGame(document.getElementById("button"));
                             break;
                         case "O":
                             document.getElementById("span").innerHTML = "O venceu";
                             play = false;
-                            stopGame();
+                            stopGame(document.getElementById("button"));
                             break;
                     }
                 }
@@ -168,7 +179,7 @@
 <body>
     <div class="content">
         <h4>Jogo da velha</h4>
-        <span id="span">Vez de: <span id="playerAtual">X</span></span><hr>
+        <span id="span">Vez de: <span id="currentPlayer">X</span></span><hr>
         <table class="tabela">
             <tr>
                 <td class="canto" id="1:1" onclick="setValue(this)"></td>
