@@ -6,11 +6,41 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/stylesheet.css">
     <script>
-        play = true;
-        player = ["X", "O"];
-        i = 0;
-        vez = 0;
-        function setCamp (btn) {
+        var play = false;
+        var player = ["X", "O"];
+        var i, vez;
+
+        function startGame(btn) {
+            i = 0;
+            vez = 0;
+            play = true;
+            document.getElementById("button").innerHTML = "parar jogo";
+            btn.setAttribute("onclick", "stopGame(this)");
+        }
+
+        function stopGame(btn) {
+            play = false;
+            document.getElementById("button").innerHTML = "resetar jogo";
+            btn.setAttribute("onclick", "resetGame(this)");
+        }
+
+        function resetGame(btn) {
+            i = 0;
+            vez = 0;
+            play = false;
+
+            for (i = 1; i <= 3; i++) {
+                for (j = 1; j <= 3; j++) {
+                    document.getElementById(i + ":" + j).innerHTML = "";
+                }
+            }
+
+            document.getElementById("span").innerHTML = 'Vez de: <span id="playerAtual">X</span>';
+            document.getElementById("button").innerHTML = "iniciar jogo";
+            btn.setAttribute("onclick", "startGame(this)");
+        }
+
+        function setValue (btn) {
             if (play == true) {
                 valorAnterior = document.getElementById(btn.id).innerHTML;
                 if (document.getElementById(btn.id).innerHTML == "") {
@@ -39,8 +69,10 @@
 
         function checkResult() {
             for (i = 1; i <= 3; i++) {
+                checkRow(i);
                 checkColumn(i);
             }
+            checkDiagonal();
         }
 
         function checkRow(a) {
@@ -52,12 +84,14 @@
                 document.getElementById(a + ":3").innerHTML) {
                     switch (rowValue) {
                         case "X":
-                            alert("vencedor: X");
+                            document.getElementById("span").innerHTML = "X venceu";
                             play = false;
+                            stopGame();
                             break;
                         case "O":
-                            alert("vencedor: O");
+                            document.getElementById("span").innerHTML = "O venceu";
                             play = false;
+                            stopGame();
                             break;
                     }
                 }
@@ -73,12 +107,53 @@
                 document.getElementById("3:" + a).innerHTML) {
                     switch (columnValue) {
                         case "X":
-                            alert("vencedor: X");
+                            document.getElementById("span").innerHTML = "X venceu";
                             play = false;
+                            stopGame();
                             break;
                         case "O":
-                            alert("vencedor: O");
+                            document.getElementById("span").innerHTML = "O venceu";
                             play = false;
+                            stopGame();
+                            break;
+                    }
+                }
+            }
+        }
+
+        function checkDiagonal() {
+            diagonalValule = document.getElementById("2:2").innerHTML;
+            if (diagonalValule != "") {
+                if (document.getElementById("2:2").innerHTML ==
+                document.getElementById("1:1").innerHTML
+                && document.getElementById("2:2").innerHTML ==
+                document.getElementById("3:3").innerHTML) {
+                    switch (diagonalValule) {
+                        case "X":
+                            document.getElementById("span").innerHTML = "X venceu";
+                            play = false;
+                            stopGame();
+                            break;
+                        case "O":
+                            document.getElementById("span").innerHTML = "O venceu";
+                            play = false;
+                            stopGame();
+                            break;
+                    }
+                } else if ( document.getElementById("2:2").innerHTML ==
+                            document.getElementById("1:3").innerHTML
+                            && document.getElementById("2:2").innerHTML ==
+                            document.getElementById("3:1").innerHTML) {
+                    switch (diagonalValule) {
+                        case "X":
+                            document.getElementById("span").innerHTML = "X venceu";
+                            play = false;
+                            stopGame();
+                            break;
+                        case "O":
+                            document.getElementById("span").innerHTML = "O venceu";
+                            play = false;
+                            stopGame();
                             break;
                     }
                 }
@@ -90,24 +165,25 @@
 <body>
     <div class="content">
         <h4>Jogo da velha</h4>
-        <span>Vez de: <span id="playerAtual">X</span></span>
+        <span id="span">Vez de: <span id="playerAtual">X</span></span><hr>
         <table class="tabela">
             <tr>
-                <td class="canto" id="1:1" onclick="setCamp(this)"></td>
-                <td class="vertical" id="1:2" onclick="setCamp(this)"></td>
-                <td class="canto" id="1:3" onclick="setCamp(this)"></td>
+                <td class="canto" id="1:1" onclick="setValue(this)"></td>
+                <td class="vertical" id="1:2" onclick="setValue(this)"></td>
+                <td class="canto" id="1:3" onclick="setValue(this)"></td>
             </tr>
             <tr>
-                <td class="horizontal" id="2:1" onclick="setCamp(this)"></td>
-                <td class="centro" id="2:2" onclick="setCamp(this)"></td>
-                <td class="horizontal" id="2:3" onclick="setCamp(this)"></td>
+                <td class="horizontal" id="2:1" onclick="setValue(this)"></td>
+                <td class="centro" id="2:2" onclick="setValue(this)"></td>
+                <td class="horizontal" id="2:3" onclick="setValue(this)"></td>
             </tr>
             <tr>
-                <td class="canto" id="3:1" onclick="setCamp(this)"></td>
-                <td class="vertical" id="3:2" onclick="setCamp(this)"></td>
-                <td class="canto" id="3:3" onclick="setCamp(this)"></td>
+                <td class="canto" id="3:1" onclick="setValue(this)"></td>
+                <td class="vertical" id="3:2" onclick="setValue(this)"></td>
+                <td class="canto" id="3:3" onclick="setValue(this)"></td>
             </tr>
-        </table>
+        </table><hr>
+        <button onclick="startGame(this)" id="button">Iniciar</button>
     </div>
 </body>
 </html>
