@@ -64,17 +64,15 @@
         }
 
         function nextRound () {
-            round++;
             if (round < 9) {
-                if (turn == 0) {
+                round++;
+            }
+
+            if (turn == 0) {
                     turn = 1;
                 } else {
                     turn = 0;
                 }
-            } else {
-                document.getElementById("span").innerHTML = "Velha!";
-                stopGame(document.getElementById("button"));
-            }
 
             document.getElementById("currentPlayer").innerHTML = player[turn];
         }
@@ -85,8 +83,21 @@
             for (i = 1; i <= 3; i++) {
                 checkRow(i);
                 checkColumn(i);
+                checkDiagonal();
             }
-            checkDiagonal();
+
+            if (round == 9) {
+                checkDrawGame();
+            }
+        }
+
+        function checkDrawGame() {
+            if (!checkRow(1) && !checkRow(2) && !checkRow(3) &&
+            !checkColumn(1) && !checkColumn(2) && !checkColumn(3) &&
+            !checkDiagonal()) {
+                document.getElementById("span").innerHTML = "Velha!";
+                stopGame(document.getElementById("button"));
+            }
         }
 
         /*  verificando linhas.
@@ -108,8 +119,11 @@
                             document.getElementById("span").innerHTML = "O venceu!";
                             play = false;
                             stopGame(document.getElementById("button"));
-                            break;
+                            break; 
                     }
+                    return true;
+                } else {
+                    return false;
                 }
             }
         }
@@ -135,6 +149,9 @@
                             stopGame(document.getElementById("button"));
                             break;
                     }
+                    return true;
+                } else {
+                    return false;
                 }
             }
         }
@@ -160,6 +177,7 @@
                             stopGame(document.getElementById("button"));
                             break;
                     }
+                    return true;
                 } else if ( document.getElementById("2:2").innerHTML ==
                             document.getElementById("1:3").innerHTML
                             && document.getElementById("2:2").innerHTML ==
@@ -176,6 +194,9 @@
                             stopGame(document.getElementById("button"));
                             break;
                     }
+                    return true;
+                } else {
+                    return false;
                 }
             }
         }
