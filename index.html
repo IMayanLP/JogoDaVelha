@@ -231,12 +231,13 @@
         */
 
         function IA() {
-            var XandY = gerateID();
+            var randomNum = parseInt(Math.random()*100);
+            var XandY = gerateID(randomNum);
             var btn = document.getElementById(XandY);
 
             if (round != 9) {
                 while (document.getElementById(btn.id).innerHTML != "") {
-                XandY = gerateID();
+                XandY = gerateID(randomNum);
                 btn = document.getElementById(XandY);
                 }
 
@@ -244,32 +245,50 @@
             }
         }
 
-        function gerateID() {
-            for (var i = 1; i <= 3; i++) {
-                if (IACheckRow(i)) {
-                    return IACheckRow(i);
+        function gerateID(num) {
+            var weight;
+
+            if (difficulty == 1) {
+                weight = 90;
+            } else if (difficulty == 2) {
+                weight = 50;
+            } else {
+                weight = 20;
+            }
+
+            if (num > weight) {
+                for (var i = 1; i <= 3; i++) {
+                    if (IACheckRow(i)) {
+                        return IACheckRow(i);
+                    }
                 }
-            }
 
-            for (var i = 1; i <= 3; i++) {
-                if (IACheckColumn(i)) {
-                    return IACheckColumn(i);
+                for (var i = 1; i <= 3; i++) {
+                    if (IACheckColumn(i)) {
+                        return IACheckColumn(i);
+                    }
                 }
-            }
 
-            if (IACheckDiagonal()) {
-                return IACheckDiagonal();
-            }
+                if (IACheckDiagonal()) {
+                    return IACheckDiagonal();
+                }
 
+                return RandomID();
+            } else {
+                return RandomID();
+            }
+        }
+
+        function RandomID() {
             var x = parseInt(Math.random()*10);
-            var y = parseInt(Math.random()*10);
+                var y = parseInt(Math.random()*10);
 
-            while (x > 3 || x == 0) {
-                x = parseInt(Math.random()*10);
-            }
-            while (y > 3 || y == 0) {
-                y = parseInt(Math.random()*10);
-            }
+                while (x > 3 || x == 0) {
+                    x = parseInt(Math.random()*10);
+                }
+                while (y > 3 || y == 0) {
+                    y = parseInt(Math.random()*10);
+                }
 
             return (x + ":" + y);
         }
