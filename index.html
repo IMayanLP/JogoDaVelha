@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,15 @@
     <script>
         /*  Criando variaveis necessárias no jogo.
             Creating necessary variables in the game. */
+        var gamemode = prompt("qual modo você deseja jogar \n 1: Singleplayer \n 2̣: Multiplayer");
+        var difficulty;
+        if (gamemode == 1) {
+            gamemode = "singleplayer";
+            difficulty = prompt("qual dificuldade você deseja jogar \n 1: fácil \n 2̣: médio \n 3̣: dificil");
+        } else {
+            gamemode = "multiplayer";
+            difficulty = null;
+        }
         var play = false;
         var player = ["X", "O"];
         var round, turn;
@@ -68,11 +77,20 @@
                 round++;
             }
 
-            if (turn == 0) {
+            if (gamemode == "singleplayer") {
+                if (turn == 0) {
+                    turn = 1;
+                    IA();
+                } else {
+                    turn = 0;
+                }
+            } else {
+                if (turn == 0) {
                     turn = 1;
                 } else {
                     turn = 0;
                 }
+            }
 
             document.getElementById("currentPlayer").innerHTML = player[turn];
         }
@@ -105,7 +123,7 @@
         /*  verificando linhas.
             cheking lines. */
         function checkRow(a) {
-            rowValue = document.getElementById(a + ":1").innerHTML;
+            var rowValue = document.getElementById(a + ":1").innerHTML;
             if (rowValue != "") {
                 if (document.getElementById(a + ":1").innerHTML ==
                 document.getElementById(a + ":2").innerHTML
@@ -133,7 +151,7 @@
         /*  verificando colunas.
             cheking columns. */
         function checkColumn(a) {
-            columnValue = document.getElementById("1:" + a).innerHTML;
+            var columnValue = document.getElementById("1:" + a).innerHTML;
             if (columnValue != "") {
                 if (document.getElementById("1:" + a).innerHTML ==
                 document.getElementById("2:" + a).innerHTML
@@ -161,7 +179,7 @@
         /*  verificando diagonais.
             checking diagonals. */
         function checkDiagonal() {
-            diagonalValule = document.getElementById("2:2").innerHTML;
+            var diagonalValule = document.getElementById("2:2").innerHTML;
             if (diagonalValule != "") {
                 if (document.getElementById("2:2").innerHTML ==
                 document.getElementById("1:1").innerHTML
@@ -200,6 +218,115 @@
                 } else {
                     return false;
                 }
+            }
+        }
+
+        /*
+
+
+            INICIANDO PROGRMAÇÃO DA IA
+            STARTING IA PROGRAMING
+
+
+        */
+
+        function IA() {
+            var XandY = gerateID();
+            var btn = document.getElementById(XandY);
+
+            if (round != 9) {
+                while (document.getElementById(btn.id).innerHTML != "") {
+                XandY = gerateID();
+                btn = document.getElementById(XandY);
+                }
+
+                setValue(btn);
+            }
+        }
+
+        function gerateID() {
+            for (var i = 1; i <= 3; i++) {
+                if (IACheckRow(i)) {
+                    return IACheckRow(i);
+                }
+            }
+
+            for (var i = 1; i <= 3; i++) {
+                if (IACheckColumn(i)) {
+                    return IACheckColumn(i);
+                }
+            }
+
+            if (IACheckDiagonal()) {
+                return IACheckDiagonal();
+            }
+
+            var x = parseInt(Math.random()*10);
+            var y = parseInt(Math.random()*10);
+
+            while (x > 3 || x == 0) {
+                x = parseInt(Math.random()*10);
+            }
+            while (y > 3 || y == 0) {
+                y = parseInt(Math.random()*10);
+            }
+
+            return (x + ":" + y);
+        }
+
+        function IACheckRow(a) {
+            var one = document.getElementById(a + ":1").innerHTML;
+            var two = document.getElementById(a + ":2").innerHTML;
+            var three = document.getElementById(a + ":3").innerHTML;
+
+            if (one == two && one != "" && three == "") {
+                return (a + ":3");
+            } else if (one == three && one != "" && two == "") {
+                return (a + ":2");
+            } else if (two == three && two != "" && one == "") {
+                return (a + ":1");
+            } else {
+                return false;
+            }
+        }
+
+        function IACheckColumn(a) {
+            var one = document.getElementById("1:" + a).innerHTML;
+            var two = document.getElementById("2:" + a).innerHTML;
+            var three = document.getElementById("3:" + a).innerHTML;
+
+            if (one == two && one != "" && three == "") {
+                return ("3:" + a);
+            } else if (one == three && one != "" && two == "") {
+                return ("2:" + a);
+            } else if (two == three && two != "" && one == "") {
+                return ("1:" + a);
+            } else {
+                return false;
+            }
+        }
+
+        function IACheckDiagonal() {
+            var oneL = document.getElementById("1:1").innerHTML;
+            var oneR = document.getElementById("1:3").innerHTML;
+            var two = document.getElementById("2:2").innerHTML;
+            var threeR = document.getElementById("3:3").innerHTML;
+            var threeL = document.getElementById("3:1").innerHTML;
+
+            if (oneL == two && oneL != "" && threeR == "") {
+                return ("3:3");
+            } else if (oneL == threeR && oneL != "" && two == "") {
+                return ("2:2");
+            } else if (two == threeR && two != "" && oneL == "") {
+                return ("1:1");
+            } else if (oneR == two && oneR != "" && threeL == "") {
+                return ("3:1");
+            } else if (oneR == threeL && oneR != "" && two == "") {
+                return ("2:2");
+            } else if (two == threeL && two != "" && oneR == "") {
+                return ("1:3");
+            } else {
+                return false;
             }
         }
     </script>
